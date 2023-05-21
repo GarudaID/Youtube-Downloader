@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link
+      rel="shortcut icon"
+      type="image/png"
+      href="assets/img/front/favicon.ico"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Video Downloader | By Near</title>
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <style>
+        .container {
+            width: auto;
+            max-width: 680px;
+            padding: 0 15px;
+        }
+
+        .footer {
+            background-color: #f1f1f1;
+        }
+
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+    <script>
+        //<![CDATA[
+			//Anti CTRL+U dan CTRL+C by AwResume.com
+			function awrsmCUCC(e) {
+			  if (e.ctrlKey && (e.which == 85) || (e.which == 67)) {
+				window.location.replace("https://github.com/GarudaID");
+				return false;
+			  }
+			}
+			document.onkeydown = awrsmCUCC;
+			
+			//Anti Klik Kanan by AwResume.com
+			function awrsmRC(e) {
+			  if (e.which == 3) {
+				window.location.replace("https://github.com/GarudaID");
+				return false;
+			  }
+			}
+			document.oncontextmenu = awrsmRC;
+			//]]>
+            
+        $(function () {
+            $("#btn_fetch").click(function (e) {
+                e.preventDefault = false;
+                let url = $("#txt_url").val();
+                let oThis = $(this);
+                oThis.attr('disabled', true);
+
+                //API DOWNLOAD VIDEO
+                $.get('https://yt-dlp-api.peterli.website/video/?video_url=' + url, function (data) {
+                    console.log(data);
+
+                    oThis.attr('disabled', false);
+
+                    let links = data['links'];
+                    let error = data['error'];
+
+                    if (error) {
+                        alert('Pesan Error: ' + error);
+                        return false;
+                    }
+
+                    if (links.length === 0) {
+                        alert('Tautan video tidak ditemukan!');
+                        return false;
+                    }
+
+                    let tbodyVideoLists = '';
+                    let dataIndex = 1;
+                    let downloadLink = '';
+                    for (index in links) {
+                        downloadLink = './download.php?video_url=' + links[index]['url'];
+
+                        tbodyVideoLists += '<tr>';
+                        tbodyVideoLists += '<th scope="row">' + dataIndex + '</th>';
+                        tbodyVideoLists += '<td>' + links[index]['format'] + '</td>';
+                        tbodyVideoLists += '<td>' + links[index]['itag'] + '</td>';
+                        tbodyVideoLists += '<td><a href="' + downloadLink  + '">&#10084;Pencet sini&#10084;</a></td>';
+                        tbodyVideoLists += '</tr>';
+                        dataIndex += 1;
+                    }
+
+                    $('#video-lists').html(tbodyVideoLists);
+                });
+            });
+
+        });
+    </script>
+</head>
+<!---MusiK Dashboard-->
+<body onclick="playAudio();" class=""><audio id="lagu" __idm_id__="823202817">
+    <source src="https://media.publit.io/file/Cupid-Twin-Version-Sped-Up.mp3">
+    </audio> <div class="music"> <script> 	var x = document.getElementById("lagu"); 	
+    function playAudio() { 	x.play(); 	} 	 	
+    function myFunction() { 		 
+        var element = document.body; element.classList.toggle("dark-mode"); } function changeImage() { if (document.getElementById("imgClickAndChange").src == "body") { document.getElementById("imgClickAndChange").src = "body"; } else { document.getElementById("imgClickAndChange").src = "body"; } } </script>
+    <!-- END MUSIK -->
+<body>
+    <main role="main" class="flex-shrink-0">
+        <div class="container">
+          <center><h1 class="mt-5">YouTube Video Downloader</h1></center>
+          <div class="row justify-content-left">
+            <div class="col-12 col-md-12 col-lg-12">
+                <form class="card card-sm">
+                    <div class="card-body row no-gutters align-items-center">
+                        <div class="col-auto">
+                            <i class="fas fa-search h4 text-body"></i>
+                        </div>
+                        <!--end of col-->
+                        <div class="col">
+                            <input id="txt_url" class="form-control form-control-lg" type="text" placeholder="https://www.youtube.com/watch?v=UQYaGQnBW-E">
+                        </div>
+                        <!--end of col-->
+                        <div class="col-auto">
+                            <button id="btn_fetch" class="btn btn-lg btn-success" type="button">Cari</button>
+                        </div>
+                        <!--end of col-->
+                    </div>
+                </form>
+            </div>
+            <!--end of col-->
+            </div><br>
+           <div class="row justify-content-left">
+          <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">No</th>
+                <th scope="col">Jenis/Format</th>
+                <th scope="col">Size/Ukuran</th>
+                <th scope="col">Download Link</th>
+              </tr>
+            </thead>
+            <tbody id="video-lists"></tbody>
+          </table>
+          </div>
+        </div>
+    </main>
+    <hr>
+    <center><p><b>Tutorial Singkat</b>
+        <br>1. Cari video dari youtube yang kamu sukai<br>
+        2. Ambil Link youtube yang berada di <strong>URL</strong><br>
+        3. Masukan link youtube barusan yang kamu Copy<br>
+        4. Paste kedalan kolom Downloader.<br><br>
+        <i>note: jenis format url <b>m.youtube</b> tidak akan support</i>
+        <br><br><br><br>
+        Thanks to @Near Hoshinova
+    </p></center>
+    <script src="https://cdn.rawgit.com/bungfrangki/efeksalju/2a7805c7/efek-salju.js" type="0884d27f46895312a68e201b-text/javascript"></script>
+</body>
+</html>
