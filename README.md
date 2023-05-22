@@ -10,7 +10,10 @@
 
 - Here is the [link](https://api.musical.my.id/) for this repository demonstration.
 
-## Thanks
+## Download for new YTV Downloader
+- Here is the [New-Version](https://github.com/GarudaID/Youtube-Downloader/releases/tag/new-version) YTV Downloader cool design.
+
+## Thanks To
 
 Here are some repositories to accomplish this web-based service!
 
